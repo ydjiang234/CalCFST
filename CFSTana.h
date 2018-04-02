@@ -20,8 +20,6 @@ public:
 private:
     void analysisOneStep(double target, double interval);
     void reset();
-    void convertResults();
-
 
 };
 

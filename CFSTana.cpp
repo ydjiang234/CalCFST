@@ -47,11 +47,3 @@ void CFSTana::reset()
     this->Xresults.clear();
     this->Yresults.clear();
 }
-
-void CFSTana::convertResults()
-{
-    //double *pt[this->Xresults.data().size()];
-    //double *pt = this->Xresults.data();
-    //std::copy(this->Xresults.begin(), this->Xresults.end(), pt);
-    //this->xout = Eigen::Map<Eigen::ArrayXd>(pt);
-}
