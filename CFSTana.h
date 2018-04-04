@@ -13,6 +13,7 @@ public:
     CFSTana();
     ~CFSTana();
     void analysis(Eigen::ArrayXd loadingProtocol, double interval);
+    void analysisFull(Eigen::ArrayXd loadingProtocol);
 
     std::vector<double> Xresults, Yresults;
     Eigen::ArrayXd loadingProtocol, xout, yout;
@@ -20,6 +21,7 @@ public:
 private:
     void analysisOneStep(double target, double interval);
     void reset();
+    void convertResults();
 
 };
 

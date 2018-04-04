@@ -52,28 +52,31 @@ XYcyclic CalCFST::analysis(Eigen::ArrayXd vector)
     Dfactor1 = vector(0);
     Efactor1 = vector(1);
     Rfactor1 = vector(2);
-    Rfactor2 = vector(3);
+    Dfactor2 = vector(3);
+    Rfactor2 = vector(4);
 
     CFSTana cfst = CFSTana(E, f1, f2, b1, b2, revRatio,
                            Dfactor1, Efactor1, Rfactor1,
                            Dfactor2, Efactor2, Rfactor2);
-    cfst.analysis(this->targetXY.turnX, this->interval);
+
+    cfst.analysisFull(this->targetXY.xdata);
+
     XYcyclic curXY = XYcyclic(cfst.xout, cfst.yout);
+
     return curXY;
 }
 
 double CalCFST::fitness(XYcyclic curXY)
 {
     double out;
-    double dY, dEnergy;
-    Eigen::ArrayXd Y;
+    double dY, dBB, dEnergy;
 
     curXY.getTurning();
     curXY.getHalfCycleEnergy();
 
-    unsigned int turnNum = std::min(curXY.turnID.size(), this->targetXY.turnID.size());
-    dY = (this->targetXY.turnY.head(turnNum) - curXY.turnY.head(turnNum)).pow(2).sum() / turnNum;
-    dEnergy = (this->targetXY.halfCycleEnergy.head(turnNum-1) - curXY.halfCycleEnergy.head(turnNum-1)).pow(2).sum() / turnNum;
-    out = -1 * std::sqrt(dY + dEnergy) / 2;
+    dY = (this->targetXY.ydata - curXY.ydata).pow(2).sum() / this->targetXY.num;
+    dBB = (this->targetXY.turnY - curXY.turnY).pow(2).sum() / this->targetXY.turnY.size();
+    //dEnergy = (this->targetXY.halfCycleEnergy - curXY.halfCycleEnergy).pow(2).sum() / (this->targetXY.halfCycleEnergy.size() - 1);
+    out = -1 * std::sqrt((dY + dBB) / 2);
     return out;
 }

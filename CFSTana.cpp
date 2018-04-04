@@ -19,8 +19,20 @@ void CFSTana::analysis(Eigen::ArrayXd loadingProtocol, double interval)
     for (int i=0; i<this->loadingProtocol.size(); ++i) {
         this->analysisOneStep(this->loadingProtocol[i], interval);
     }
-    this->xout = Eigen::Map<Eigen::ArrayXd>(this->Xresults.data(), this->Xresults.size());
-    this->yout = Eigen::Map<Eigen::ArrayXd>(this->Yresults.data(), this->Yresults.size());
+    this->convertResults();
+}
+
+void CFSTana::analysisFull(Eigen::ArrayXd loadingProtocol)
+{
+    this->reset();
+    this->loadingProtocol = loadingProtocol;
+    for (int i=0; i<loadingProtocol.size(); i++) {
+        this->nextStress(loadingProtocol[i]);
+        this->next();
+        this->Xresults.push_back(this->strain);
+        this->Yresults.push_back(this->stress);
+    }
+    this->convertResults();
 }
 
 void CFSTana::analysisOneStep(double target, double interval)
@@ -46,4 +58,10 @@ void CFSTana::reset()
 {
     this->Xresults.clear();
     this->Yresults.clear();
+}
+
+void CFSTana::convertResults()
+{
+    this->xout = Eigen::Map<Eigen::ArrayXd>(this->Xresults.data(), this->Xresults.size());
+    this->yout = Eigen::Map<Eigen::ArrayXd>(this->Yresults.data(), this->Yresults.size());
 }
