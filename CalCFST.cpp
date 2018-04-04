@@ -52,6 +52,7 @@ XYcyclic CalCFST::analysis(Eigen::ArrayXd vector)
     Dfactor1 = vector(0);
     Efactor1 = vector(1);
     Rfactor1 = vector(2);
+    Rfactor2 = vector(3);
 
     CFSTana cfst = CFSTana(E, f1, f2, b1, b2, revRatio,
                            Dfactor1, Efactor1, Rfactor1,
